@@ -1,4 +1,5 @@
 import scrapy
+from naver_crawler.items import NaverCrawlerItem
 
 
 class NaverSpider(scrapy.Spider):
@@ -24,6 +25,11 @@ class NaverSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        content = response.xpath(
+        item = NaverCrawlerItem()
+        item['url'] = response.url
+        item['content'] = response.xpath(
             "//div[@id='articleBodyContents']//text()").getall()
-        self.log(content)
+        item['media'] = response.xpath(
+            "//div[@class='press_logo']/a/img/@alt").get()
+
+        yield item
