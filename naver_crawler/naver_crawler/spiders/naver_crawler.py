@@ -11,7 +11,7 @@ class NaverSpider(scrapy.Spider):
             "https://search.naver.com/search.naver?where=news&query=%EA%B8%88%EB%A6%AC&sm=tab_opt&sort=0&photo=0&field=0&reporter_article=&pd=3&ds=2005.01.01&de=2015.01.31&docid=&nso=so%3Ar%2Cp%3Afrom20050101to20150131%2Ca%3Aall&mynews=1&refresh_start=0&related=0"
         ]
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse_page)
+            yield scrapy.Request(url=url, cookies={'news_office_checked': '1001'}, callback=self.parse_page)
 
     def parse_page(self, response):
         articles = response.xpath("//dd[@class='txt_inline']")
